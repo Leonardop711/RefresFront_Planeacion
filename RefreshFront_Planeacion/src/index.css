@@ -50,20 +50,31 @@
   }
 }
 
-body {
+*, *::before, *::after {
+  box-sizing: border-box;
   margin: 0;
+  padding: 0;
 }
 
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  background-color: #0a0a0b; 
+}
+
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden; 
+}
+
+
 #root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: left !important; /* Evita que todo se centre si Vite lo puso así */
 }
 
 h1,
