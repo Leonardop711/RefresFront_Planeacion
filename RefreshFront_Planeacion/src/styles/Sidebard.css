@@ -1,67 +1,167 @@
-/* Sidebar base */
-.sidebar {
-  width: 280px;
-  min-height: 100vh;
-  background-color: #111112;
-  border-right: 1px solid rgba(212, 175, 55, 0.15);
+:root {
+  --sb-bg: #111112;
+  --sb-gold: #D4AF37;
+  --sb-width: 280px;
+  --sb-collapsed: 88px;
+  --sb-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sidebar-component {
+  width: var(--sb-width);
+  height: 100vh;
+  background-color: var(--sb-bg);
+  border-right: 1px solid rgba(212, 175, 55, 0.1);
   display: flex;
   flex-direction: column;
   padding: 1.5rem 1rem;
-  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Transición suave */
+  transition: var(--sb-transition);
   position: relative;
+  overflow: hidden; /* Mantiene todo dentro al colapsar */
 }
 
-/* Estado Colapsado */
-.sidebar.collapsed {
-  width: 85px;
+.sidebar-component.collapsed {
+  width: var(--sb-collapsed);
 }
 
-/* Botón de Toggle flotante */
-.collapse-btn {
-  position: absolute;
-  right: -12px;
-  top: 30px;
-  width: 24px;
-  height: 24px;
-  background-color: #111112;
-  border: 1px solid var(--gold-primary);
-  border-radius: 50%;
-  color: var(--gold-primary);
+/* --- SCROLL PERSONALIZADO (Senior UI) --- */
+.sidebar-nav {
+  flex: 1;
+  overflow-y: auto; /* Habilita el scroll */
+  overflow-x: hidden;
+  margin-top: 1rem;
+  padding-right: 4px; /* Espacio para que no choque con la barra */
+}
+
+/* Estilo de la barra de scroll para Chrome/Edge/Safari */
+.sidebar-nav::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sidebar-nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb {
+  background: rgba(212, 175, 55, 0.1);
+  border-radius: 10px;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb:hover {
+  background: var(--sb-gold);
+}
+
+/* --- HEADER & HAMBURGER --- */
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  margin-bottom: 2.5rem;
+  padding-left: 0.5rem;
+}
+
+.hamburger-btn {
+  background: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 10px;
+  transition: 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  z-index: 10;
+}
+
+.hamburger-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--sb-gold);
 }
 
 .brand-name {
   font-weight: 700;
   letter-spacing: 1px;
-  margin-left: 10px;
-  color: var(--gold-primary);
+  transition: opacity 0.2s;
 }
 
-/* Ajustes en la User Card */
+/* --- USER CARD --- */
+.user-section {
+  margin-bottom: 2rem;
+  position: relative;
+}
+
 .user-profile-card {
-  transition: padding 0.3s;
-  overflow: hidden;
-  white-space: nowrap;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 0.7rem;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  cursor: pointer;
+  transition: var(--sb-transition);
 }
 
-.sidebar.collapsed .user-profile-card {
-  padding: 0.8rem;
+.user-profile-card:hover {
+  border-color: rgba(212, 175, 55, 0.3);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.avatar {
+  min-width: 28px;
+  height: 28px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
   justify-content: center;
 }
 
-/* Ajustes en la Navegación */
+.user-info {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: opacity 0.2s;
+}
+
+.username {
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.area-tag {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* --- NAV ITEMS & ICONS --- */
+.icon-box {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.02);
+  color: #777;
+  transition: 0.3s;
+  flex-shrink: 0;
+}
+
 .menu-trigger {
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-.sidebar.collapsed .menu-trigger {
-  justify-content: center;
-  padding: 1rem 0;
+  width: 100%;
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem;
+  border-radius: 12px;
+  cursor: pointer;
+  margin-bottom: 0.4rem;
+  color: #aaa;
+  transition: var(--sb-transition);
 }
 
 .trigger-content {
@@ -70,11 +170,87 @@
   gap: 12px;
 }
 
-/* Animación de salida para el logout */
-.logout-btn span {
+.label-text {
+  font-size: 0.9rem;
+  white-space: nowrap;
   transition: opacity 0.2s;
 }
 
-.sidebar.collapsed .logout-btn span {
-  display: none;
+.menu-trigger:hover .icon-box,
+.menu-trigger.active .icon-box {
+  background: rgba(212, 175, 55, 0.15);
+  color: var(--sb-gold);
+}
+
+.menu-trigger.active {
+  background: rgba(255, 255, 255, 0.03);
+  color: #fff;
+}
+
+/* --- SUBMENÚ ESTILIZADO (Fusionado) --- */
+.submenu {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-left: 3.2rem; /* Alineado con el texto del padre */
+  margin-bottom: 1rem;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.submenu-item {
+  color: #666;
+  text-decoration: none; /* Elimina el subrayado azul */
+  font-size: 0.82rem;
+  padding: 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.submenu-item:hover {
+  color: #fff;
+  transform: translateX(4px); /* Efecto de desplazamiento */
+}
+
+/* Punto decorativo opcional para el submenú */
+.submenu-item::before {
+  content: "•";
+  color: transparent;
+  font-size: 1.2rem;
+  transition: color 0.2s;
+}
+
+.submenu-item:hover::before {
+  color: var(--sb-gold);
+}
+
+/* --- COLAPSO SUAVE (Lógica de visibilidad) --- */
+.sidebar-component.collapsed .label-text,
+.sidebar-component.collapsed .user-info,
+.sidebar-component.collapsed .user-arrow,
+.sidebar-component.collapsed .brand-name,
+.sidebar-component.collapsed .arrow,
+.sidebar-component.collapsed .submenu {
+  opacity: 0;
+  width: 0;
+  margin: 0;
+  padding: 0;
+  pointer-events: none;
+  display: none; /* Evita que ocupen espacio al estar colapsado */
+}
+
+.sidebar-component.collapsed .menu-trigger {
+  justify-content: center;
+}
+
+.sidebar-divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(212, 175, 55, 0.1), transparent);
+  margin-bottom: 1.5rem;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
 }

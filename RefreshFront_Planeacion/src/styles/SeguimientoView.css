@@ -1,157 +1,31 @@
-:root {
-  --sidebar-width: 280px;
-  --sidebar-collapsed-width: 88px;
-  --gold-primary: #D4AF37;
-  --bg-dark: #0a0a0b;
-  --bg-sidebar: #111112;
-  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.sidebar {
-  width: var(--sidebar-width);
-  background-color: var(--bg-sidebar);
-  border-right: 1px solid rgba(212, 175, 55, 0.1);
+/* src/styles/SeguimientoView.css */
+.seguimiento-layout {
   display: flex;
-  flex-direction: column;
-  padding: 1.5rem 1rem;
-  transition: var(--transition);
-  position: relative;
-  overflow: hidden; /* Vital para que nada se salga al contraer */
+  width: 100vw;
+  height: 100vh;
+  background-color: #0a0a0b;
+  overflow: hidden;
 }
 
-.sidebar.collapsed {
-  width: var(--sidebar-collapsed-width);
+.content-area {
+  flex: 1; /* Esto hace que el contenido ocupe el resto del espacio */
+  padding: 2.5rem;
+  overflow-y: auto;
+  transition: all 0.3s ease;
 }
 
-/* Header & Hamburger */
-.sidebar-header {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 2.5rem;
-  padding-left: 0.5rem;
+.content-header h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
 }
 
-.hamburger-btn {
-  background: transparent;
-  border: none;
-  color: #fff;
-  cursor: pointer;
-  padding: 8px;
-  border-radius: 8px;
-  transition: background 0.2s;
-}
-
-.hamburger-btn:hover {
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--gold-primary);
-}
-
-.brand-name {
-  font-weight: 800;
-  letter-spacing: 2px;
-  opacity: 1;
-  transition: opacity 0.2s;
-}
-
-.sidebar.collapsed .brand-name { opacity: 0; pointer-events: none; }
-
-/* User Card Pro */
-.user-section { margin-bottom: 1.5rem; position: relative; }
-
-.user-profile-card {
-  background: rgba(255, 255, 255, 0.03);
+.glass-card {
+  background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.05);
-  padding: 0.8rem;
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  cursor: pointer;
-  transition: var(--transition);
-}
-
-.user-profile-card:hover {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(212, 175, 55, 0.3);
-}
-
-.user-details {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  transition: opacity 0.2s;
-}
-
-.sidebar.collapsed .user-details, 
-.sidebar.collapsed .user-arrow {
-  opacity: 0;
-  pointer-events: none;
-  width: 0;
-}
-
-.username { font-size: 0.9rem; font-weight: 600; color: #fff; white-space: nowrap; }
-.area-tag { font-size: 0.7rem; font-weight: 500; text-transform: uppercase; }
-
-/* User Dropdown */
-.user-dropdown {
-  margin-top: 0.5rem;
-  background: #1a1a1c;
-  border: 1px solid rgba(212, 175, 55, 0.2);
-  border-radius: 10px;
-  padding: 0.5rem;
-  animation: slideDown 0.2s ease-out;
-}
-
-@keyframes slideDown {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.dropdown-item {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 12px;
-  background: transparent;
-  border: none;
-  color: #a0a0a0;
-  font-size: 0.85rem;
-  cursor: pointer;
-  border-radius: 6px;
-  white-space: nowrap;
-}
-
-.dropdown-item:hover { background: rgba(255, 255, 255, 0.05); color: #fff; }
-.dropdown-item.logout { color: #ff5555; }
-.dropdown-item.logout:hover { background: rgba(255, 85, 85, 0.1); }
-
-/* Nav Links UI */
-.label-text {
-  transition: opacity 0.2s;
-  white-space: nowrap;
-}
-
-.sidebar.collapsed .label-text { opacity: 0; }
-
-.menu-trigger {
-  padding: 0.9rem 1rem;
-}
-
-.sidebar.collapsed .menu-trigger {
-  justify-content: center;
-  padding: 1rem 0;
-}
-
-.icon-wrapper {
-  min-width: 24px;
-  display: flex;
-  justify-content: center;
-}
-
-.divider {
-  height: 1px;
-  background: linear-gradient(to right, transparent, rgba(212, 175, 55, 0.2), transparent);
-  margin-bottom: 1.5rem;
+  padding: 3rem;
+  border-radius: 20px;
+  text-align: center;
 }
