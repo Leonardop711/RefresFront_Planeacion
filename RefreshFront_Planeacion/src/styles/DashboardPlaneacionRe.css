@@ -139,6 +139,28 @@
   color: var(--gold-primary);
 }
 
+/* Estilo para tarjetas sin acceso */
+.nav-card.locked {
+  opacity: 0.5;
+  filter: grayscale(100%);
+  pointer-events: none; /* Evita que se pueda hacer hover o clic en toda la tarjeta */
+  position: relative;
+}
+
+.lock-icon {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  color: #ff5555; /* Un rojo sutil de advertencia */
+}
+
+/* Estilo del botón desactivado */
+.card-btn:disabled {
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #666;
+  cursor: not-allowed;
+}
+
 /* Responsividad */
 @media (max-width: 768px) {
   .top-banner {

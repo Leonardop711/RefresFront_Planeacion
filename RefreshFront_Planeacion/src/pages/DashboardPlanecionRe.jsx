@@ -1,56 +1,76 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Sun, Moon, Target, TrendingUp, BarChart3, LayoutDashboard } from 'lucide-react';
-import '../styles/dashboardPlaneacionRe.css';
+import { Target, TrendingUp, BarChart3, LayoutDashboard, Lock } from 'lucide-react';
+import '../styles/DashboardPlaneacionRe.css';
 
-const DashboardPlaneacionRe = () => {
-  const [isDarkMode, setIsDarkMode] = useState(true);
+const DashboardPlaneacionRe = ({ user }) => {
   const navigate = useNavigate();
 
-  // Efecto para aplicar el tema al body o contenedor principal
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
+  // Verificamos a qué área tiene acceso el usuario actual
+  // Si el área es "todas" (para un super admin de planeación), le damos acceso a todo.
+  const hasAccess = (areaRequerida) => {
+    return user?.area === areaRequerida || user?.area === 'todas';
   };
 
   return (
-    <div className={`dashboard-container ${isDarkMode ? 'dark-theme' : 'light-theme'}`}>
+    <div className="dashboard-container dark-theme">
       <header className="top-banner">
         <div className="banner-content">
           <LayoutDashboard className="icon-gold" size={32} />
           <h1>SISTEMA DE PLANEACIÓN</h1>
         </div>
-        <button className="theme-toggle" onClick={toggleTheme} aria-label="Cambiar tema">
-          {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
-          <span>{isDarkMode ? 'Modo Claro' : 'Modo Oscuro'}</span>
-        </button>
       </header>
 
       <main className="cards-grid">
-        <section className="nav-card">
+        {/* TARJETA 1: PLANEACIÓN ESTRATÉGICA */}
+        <section className={`nav-card ${!hasAccess('estrategica') ? 'locked' : ''}`}>
+          {!hasAccess('estrategica') && <Lock className="lock-icon" size={24} />}
           <div className="card-icon-wrapper">
             <Target size={40} strokeWidth={1.5} />
           </div>
           <h3>Planeación Estratégica</h3>
           <p>Definición de objetivos y metas a largo plazo.</p>
-          <button className="card-btn">Explorar Área</button>
+          <button 
+            className="card-btn" 
+            disabled={!hasAccess('estrategica')}
+            onClick={() => navigate('/workspace')}
+          >
+            {hasAccess('estrategica') ? 'Explorar Área' : 'Acceso Denegado'}
+          </button>
         </section>
 
-        <section className="nav-card">
+        {/* TARJETA 2: INVERSIÓN PÚBLICA */}
+        <section className={`nav-card ${!hasAccess('inversion') ? 'locked' : ''}`}>
+          {!hasAccess('inversion') && <Lock className="lock-icon" size={24} />}
           <div className="card-icon-wrapper">
             <TrendingUp size={40} strokeWidth={1.5} />
           </div>
           <h3>Inversión Pública</h3>
           <p>Gestión de presupuestos y recursos del estado.</p>
-          <button className="card-btn">Explorar Área</button>
+          <button 
+            className="card-btn"
+            disabled={!hasAccess('inversion')}
+            onClick={() => navigate('/workspace')}
+          >
+            {hasAccess('inversion') ? 'Explorar Área' : 'Acceso Denegado'}
+          </button>
         </section>
 
-        <section className="nav-card">
+        {/* TARJETA 3: SEGUIMIENTO Y EVALUACIÓN */}
+        <section className={`nav-card ${!hasAccess('seguimiento') ? 'locked' : ''}`}>
+          {!hasAccess('seguimiento') && <Lock className="lock-icon" size={24} />}
           <div className="card-icon-wrapper">
             <BarChart3 size={40} strokeWidth={1.5} />
           </div>
-          <h3>Dirección de Seguimiento y Evaluación</h3>
+          <h3>Seguimiento y Evaluación</h3>
           <p>Monitoreo de indicadores y resultados de gestión.</p>
-          <button className="card-btn" onClick={() =>navigate('/seguimiento')}>Explorar Área</button>
+          <button 
+            className="card-btn"
+            disabled={!hasAccess('seguimiento')}
+            onClick={() => navigate('/workspace')}
+          >
+            {hasAccess('seguimiento') ? 'Explorar Área' : 'Acceso Denegado'}
+          </button>
         </section>
       </main>
     </div>

@@ -22,5 +22,29 @@ export const INSTITUCIONES_CONFIG = {
       { id: 'rep', label: 'Reportes', icon: <Flag size={20} strokeWidth={1.5} />, sub: [{ label: 'Generar PDF', path: '/pdf' }] },
       { id: 'not', label: 'Notificaciones', icon: <Bell size={20} strokeWidth={1.5} />, sub: [{ label: 'Bandeja', path: '/mail' }] },
     ]
+  },
+  estrategica: {
+    nombreArea:"Planeacion Estrategica",
+    color: "#D4AF37", //Dorado
+    botones: [
+      { 
+        id: 'anadir', 
+        label: 'Añadir Plan', 
+        icon: <FileText size={20} strokeWidth={1.5} />, 
+        sub: [{ label: 'Carga de Metas', path: '/poa' }, { label: 'Revisiones', path: '/rev' }] 
+      },
+    ]
+  },
+    inversion: {
+    nombreArea:"Inversion Publica",
+    color: "#0CB7F2", //Dorado
+    botones: [
+      { 
+        id: 'anadir', 
+        label: 'Añadir Plan', 
+        icon: <FileText size={20} strokeWidth={1.5} />, 
+        sub: [{ label: 'Carga de Metas', path: '/poa' }, { label: 'Revisiones', path: '/rev' }] 
+      },
+    ]
   }
 };
