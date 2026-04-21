@@ -1,0 +1,121 @@
+body, #root {
+    margin: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: #0a0a0a; 
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+.login-wrapper {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+}
+
+.login-left {
+    flex: 1.5; 
+    background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.6)), 
+    url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015&auto=format&fit=crop'); 
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    padding: 40px;
+    border-right: 1px solid rgba(255,255,255,0.1);
+}
+
+.login-left h2 {
+    font-size: 3rem;
+    font-weight: 700;
+    text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    letter-spacing: -1px;
+}
+
+.login-right {
+    flex: 1;
+    background: #0a0a0a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 400px;
+    padding: 40px;
+    background: transparent;
+    color: white;
+}
+
+.login-card h1 {
+    font-size: 24px;
+    text-align: left;
+    margin-bottom: 30px;
+    font-weight: 600;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+input {
+    width: 100%;
+    padding: 14px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: #141414;
+    color: white;
+    font-size: 15px;
+    transition: 0.3s;
+}
+
+input:focus {
+    outline: none;
+    border: 1px solid white;
+    background: #1a1a1a;
+}
+
+.password-group { position: relative; }
+
+.eye {
+    position: absolute;
+    right: 15px;
+    top: 16px;
+    cursor: pointer;
+    opacity: 0.6;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 8px;
+    background: white;
+    color: black;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+button:hover {
+    background: #ccc;
+    transform: translateY(-1px);
+}
+
+.error {
+    color: #ff4d4d;
+    font-size: 13px;
+    margin-top: 8px;
+}

@@ -1,15 +1,22 @@
+// src/views/DashboardPlaneacion.jsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Target, TrendingUp, BarChart3, LayoutDashboard, Lock } from 'lucide-react';
 import '../styles/DashboardPlaneacionRe.css';
 
-const DashboardPlaneacionRe = ({ user }) => {
+const DashboardPlaneacion = ({ user }) => {
   const navigate = useNavigate();
 
-  // Verificamos a qué área tiene acceso el usuario actual
-  // Si el área es "todas" (para un super admin de planeación), le damos acceso a todo.
+  // Ahora el console.log debería mostrarte los datos correctamente
+  console.log("Usuario en Dashboard de Selección:", user);
+
   const hasAccess = (areaRequerida) => {
     return user?.area === areaRequerida || user?.area === 'todas';
+  };
+
+  const handleSelection = (areaTarget) => {
+    localStorage.setItem("user_active_area", areaTarget);
+    navigate('/workspace'); // Ruta absoluta
   };
 
   return (
@@ -33,7 +40,7 @@ const DashboardPlaneacionRe = ({ user }) => {
           <button 
             className="card-btn" 
             disabled={!hasAccess('estrategica')}
-            onClick={() => navigate('/workspace')}
+            onClick={() => handleSelection('estrategica')}
           >
             {hasAccess('estrategica') ? 'Explorar Área' : 'Acceso Denegado'}
           </button>
@@ -50,7 +57,7 @@ const DashboardPlaneacionRe = ({ user }) => {
           <button 
             className="card-btn"
             disabled={!hasAccess('inversion')}
-            onClick={() => navigate('/workspace')}
+            onClick={() => handleSelection('inversion')}
           >
             {hasAccess('inversion') ? 'Explorar Área' : 'Acceso Denegado'}
           </button>
@@ -67,7 +74,7 @@ const DashboardPlaneacionRe = ({ user }) => {
           <button 
             className="card-btn"
             disabled={!hasAccess('seguimiento')}
-            onClick={() => navigate('/workspace')}
+            onClick={() => handleSelection('seguimiento')}
           >
             {hasAccess('seguimiento') ? 'Explorar Área' : 'Acceso Denegado'}
           </button>
@@ -77,4 +84,4 @@ const DashboardPlaneacionRe = ({ user }) => {
   );
 };
 
-export default DashboardPlaneacionRe;
+export default DashboardPlaneacion;

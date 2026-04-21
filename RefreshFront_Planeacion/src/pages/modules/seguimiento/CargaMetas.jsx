@@ -1,6 +1,6 @@
 import React from 'react';
 import { Save, Plus, Trash2, Edit3 } from 'lucide-react';
-import '../../styles/Module.css'; // Crearemos este para estilos de tablas
+import '../../../styles/Module.css'; // Crearemos este para estilos de tablas
 
 const CargaMetas = () => {
   // Datos de ejemplo (Normalmente vendrían de una API/Laravel)

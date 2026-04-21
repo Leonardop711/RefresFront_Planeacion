@@ -1,91 +1,65 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ArrowLeft } from 'lucide-react';
 import Sidebar from '../components/Sidebar';
 import { INSTITUCIONES_CONFIG } from '../config/menuConfig';
-import CargaMetas from './modules/CargaMetas'; 
+import CargaMetas from './modules/seguimiento/CargaMetas';
+import CarteraProyectos from './modules/inversion/CarteraPro';
 import '../styles/WorkspacePlaneacion.css';
 
-// Recibimos el usuario, pero si no llega (undefined), no pasa nada
-const WorkspacePlaneacion = ({ user: initialUser }) => {
+const WorkspacePlaneacion = ({ user }) => {
+  const navigate = useNavigate();
   
-  // EL SALVAVIDAS: Si initialUser no existe, forzamos uno de prueba.
-  const [user, setUser] = useState(initialUser || { 
-    name: "Usuario Prueba", 
-    email: "prueba@unach.mx", 
-    area: "seguimiento" 
-  });
+  // Solo mantenemos la persistencia del área que se clickeó para no perder el color
+  const [currentArea] = useState(localStorage.getItem("user_active_area") || "seguimiento");
 
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [openMenu, setOpenMenu] = useState(null);
   const [activeModule, setActiveModule] = useState('welcome');
 
-  // Buscamos la configuración basándonos en el área seleccionada
-  const config = INSTITUCIONES_CONFIG[user.area];
+  const config = INSTITUCIONES_CONFIG[currentArea];
 
-  // Si aún así no hay config, mostramos un error elegante en lugar de romper la pantalla
-  if (!config) {
-    return (
-      <div style={{ padding: '50px', color: 'white', background: '#111', height: '100vh' }}>
-        <h2>Error: El área "{user.area}" no existe en menuConfig.jsx</h2>
-      </div>
-    );
+  const renderModule = () => {
+    switch (activeModule) {
+      case 'Carga de Metas': return <CargaMetas />;
+      case 'Cartera de Proyectos': return <CarteraProyectos />;
+      default:
+        return (
+          <div className="glass-card welcome-container">
+            <h2 style={{ color: config?.color }}>Panel de {config?.nombreArea}</h2>
+            <p>Bienvenido, <strong>{user?.name || "Usuario"}</strong>.</p>
+            <p>Selecciona una opción del menú lateral para comenzar.</p>
+          </div>
+        );
+    }
+  };
+
+  // Si por alguna razón el usuario entra directo a la URL sin loguearse
+  if (!user) {
+    return <div className="error-screen">No hay sesión activa. Redirigiendo...</div>;
   }
 
   return (
     <div className="seguimiento-layout">
-      
-      {/* 🛠️ PANEL DE PROTOTIPO 🛠️ */}
-      <div style={{
-        position: 'fixed', top: '20px', right: '20px', zIndex: 9999,
-        background: '#1a1a1c', padding: '15px', borderRadius: '12px', 
-        border: `2px solid ${config.color}`, boxShadow: '0 4px 15px rgba(0,0,0,0.5)'
-      }}>
-        <p style={{ fontSize: '11px', color: '#aaa', margin: '0 0 8px 0', fontWeight: 'bold' }}>
-          CAMBIAR ROL (PRUEBA)
-        </p>
-        <select 
-          onChange={(e) => {
-            // Actualizamos el área y reiniciamos el módulo al cambiar de rol
-            setUser({ ...user, area: e.target.value });
-            setActiveModule('welcome');
-            setOpenMenu(null);
-          }}
-          value={user.area}
-          style={{ 
-            background: '#000', color: '#fff', border: '1px solid #333', 
-            padding: '8px', borderRadius: '6px', cursor: 'pointer', outline: 'none'
-          }}
-        >
-          <option value="seguimiento">Seguimiento (Dorado)</option>
-          <option value="inversion">Inversión (Azul)</option>
-          <option value="estrategica">Estratégica (Verde)</option>
-        </select>
-      </div>
-      {/* ------------------------------------------------ */}
-
       <Sidebar 
         config={config} 
         user={user} 
         isCollapsed={isCollapsed} 
         toggleSidebar={() => setIsCollapsed(!isCollapsed)}
+        onModuleChange={(name) => setActiveModule(name)} 
         openMenu={openMenu}
         setOpenMenu={setOpenMenu}
-        onModuleChange={(name) => setActiveModule(name)} 
       />
 
       <main className="content-area">
         <header className="content-header">
-          <h2>Panel de {config.nombreArea}</h2>
+          <div className="header-left">
+            <button className="back-btn" onClick={() => navigate('/dashboard')}><ArrowLeft size={20} /></button>
+            <h2>{config?.nombreArea}</h2>
+          </div>
         </header>
-        
         <section className="main-display">
-          {activeModule === 'Carga de Metas' ? (
-            <CargaMetas />
-          ) : (
-            <div className="glass-card">
-              <h2 style={{ color: config.color }}>Vista de {config.nombreArea}</h2>
-              <p>Cambia el rol en el panel flotante de arriba a la derecha para ver cómo el menú lateral y los colores se adaptan a la credencial del usuario.</p>
-            </div>
-          )}
+          {renderModule()}
         </section>
       </main>
     </div>

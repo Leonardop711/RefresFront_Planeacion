@@ -1,5 +1,5 @@
 import React from 'react';
-import { FileText, BarChart2, ClipboardList, Flag, Bell } from 'lucide-react';
+import { FileText, BarChart2, ClipboardList, Flag, Bell, Briefcase, Wallet } from 'lucide-react';
 
 export const INSTITUCIONES_CONFIG = {
   seguimiento: {
@@ -37,14 +37,25 @@ export const INSTITUCIONES_CONFIG = {
   },
     inversion: {
     nombreArea:"Inversion Publica",
-    color: "#0CB7F2", //Dorado
+    color: "#3498db", //Dorado
     botones: [
       { 
-        id: 'anadir', 
-        label: 'Añadir Plan', 
-        icon: <FileText size={20} strokeWidth={1.5} />, 
-        sub: [{ label: 'Carga de Metas', path: '/poa' }, { label: 'Revisiones', path: '/rev' }] 
+        id: 'proyectos', 
+        label: 'Proyectos', 
+        icon: <Briefcase size={20} strokeWidth={1.5} />, 
+        sub: [
+          { label: 'Cartera de Proyectos', path: '/cartera'},
+          { label: 'Fichas Técnicas', path: '/fichas'}
+        ]
       },
+      {
+        id: 'presupuesto',
+        label: 'Presupuesto',
+        icon: <Wallet size={20} strokeWidth={1.5} />,
+        sub: [
+          { label: 'Techos Financieros', path: '/techos' }
+        ]
+      }
     ]
   }
 };
