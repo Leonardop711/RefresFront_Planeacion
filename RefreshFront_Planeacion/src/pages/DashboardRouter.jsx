@@ -1,73 +1,56 @@
 import { useEffect, useState } from "react"
-//import DashboardDependencias from "./DashboardDependencias"
-//import DashboardAdmin from "./DashboardAdmin"
-import DashboardPlaneacion from "./DashboardPlaneacion"
+import DashboardDependencias from "./DashboardDependencias"
+import DashboardPlaneacion from "./DashboardPlaneacion" // Este es el selector de tarjetas (Strategic, Inversion, Seguimiento)
+import DashboardAdmin from "./DashboardAdmin"
 
 export default function DashboardRouter() {
   const [user, setUser] = useState(null)
-  // Añadimos un estado de loading para evitar fallos visuales
-  const [loading, setLoading] = useState(true) 
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // ============================================================
-    // 🚧 MOCK (DATOS FALSOS): LECTURA DESDE LOCALSTORAGE
-    // ============================================================
-    const storedUser = localStorage.getItem("user");
-    
-    if (storedUser) {
-      const parsedUser = JSON.parse(storedUser);
-      console.log("DATA DEL USUARIO (MOCK):", parsedUser);
-      setUser(parsedUser);
-    }
-    setLoading(false); // Terminamos de verificar
-
-    // ============================================================
-    // 🚀 CÓDIGO REAL DE TU COMPAÑERO (Descomentar cuando haya Backend)
-    // ============================================================
-    /*
     const token = localStorage.getItem("token")
-    if(token) {
-      fetch("http://localhost:3001/api/auth/me", {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+
+    if (!token) {
+      setLoading(false)
+      return
+    }
+
+    fetch("https://sistema-planeacion-production.up.railway.app/api/auth/me", {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then(res => {
+        if (!res.ok) throw new Error("Sesión inválida")
+        return res.json()
       })
-      .then(res => res.json())
       .then(data => {
         console.log("DATA DEL USUARIO:", data)
         setUser(data)
         setLoading(false)
       })
       .catch(err => {
-        console.error("Error al validar token:", err);
-        setLoading(false);
-      });
-    } else {
-      setLoading(false);
-    }
-    */
+        console.error("Error en autenticación:", err)
+        setLoading(false)
+      })
   }, [])
 
-  // Mientras lee el localStorage (o el fetch), mostramos cargando
-  if (loading) return <p>Cargando Sistema...</p>
+  if (loading) return <p>Cargando información del sistema...</p>
 
-  // Si terminó de cargar y no hay usuario, bloqueamos
-  if (!user) return <p>No autorizado - Debes iniciar sesión</p>
+  if (!user) return <p>No autorizado - Inicia sesión nuevamente</p>
 
-  // Ruteo por roles
+  // LÓGICA DE RENDERIZADO POR ROLES
+  
+  // 1. Dependencias: Vista simplificada para carga de datos
   if (user.rol === "dependencias") {
-    return <DashboardDependencias />;
+    return <DashboardDependencias user={user} />
   }
 
-  if (user.rol === "planeacion") {
-    // 🔥 IMPORTANTE: Pasamos el 'user' como prop para que tu 
-    // WorkspacePlaneacion/DashboardPlaneacion sepa el 'área' (inversion, seguimiento, etc.)
-    return <DashboardPlaneacion user={user} />;
+  // 2. Planeación y Admin: Ambos entran al selector de áreas
+  // El Admin verá todas las tarjetas desbloqueadas si su campo 'area' es 'todas'
+  if (user.rol === "planeacion" || user.rol === "admin") {
+    return <DashboardPlaneacion user={user} />
   }
 
-  if (user.rol === "admin") {
-    return <DashboardAdmin />;
-  }
-
-  return <p>Rol no reconocido</p>
+  return <p>Rol no reconocido en el sistema</p>
 }
