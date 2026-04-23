@@ -1,38 +1,39 @@
 :root {
   --sb-bg: #111112;
-  --sb-gold: #D4AF37;
   --sb-width: 280px;
   --sb-collapsed: 88px;
   --sb-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Fallback inicial por seguridad */
+  --dynamic-color: #D4AF37; 
 }
 
 .sidebar-component {
   width: var(--sb-width);
   height: 100vh;
   background-color: var(--sb-bg);
-  border-right: 1px solid rgba(212, 175, 55, 0.1);
+  /* Borde dinámico con 15% de opacidad */
+  border-right: 1px solid color-mix(in srgb, var(--dynamic-color) 15%, transparent);
   display: flex;
   flex-direction: column;
   padding: 1.5rem 1rem;
   transition: var(--sb-transition);
   position: relative;
-  overflow: hidden; /* Mantiene todo dentro al colapsar */
+  overflow: hidden;
 }
 
 .sidebar-component.collapsed {
   width: var(--sb-collapsed);
 }
 
-/* --- SCROLL PERSONALIZADO (Senior UI) --- */
+/* --- SCROLL PERSONALIZADO --- */
 .sidebar-nav {
   flex: 1;
-  overflow-y: auto; /* Habilita el scroll */
+  overflow-y: auto;
   overflow-x: hidden;
   margin-top: 1rem;
-  padding-right: 4px; /* Espacio para que no choque con la barra */
+  padding-right: 4px;
 }
 
-/* Estilo de la barra de scroll para Chrome/Edge/Safari */
 .sidebar-nav::-webkit-scrollbar {
   width: 4px;
 }
@@ -42,19 +43,19 @@
 }
 
 .sidebar-nav::-webkit-scrollbar-thumb {
-  background: rgba(212, 175, 55, 0.1);
+  background: color-mix(in srgb, var(--dynamic-color) 20%, transparent);
   border-radius: 10px;
 }
 
 .sidebar-nav::-webkit-scrollbar-thumb:hover {
-  background: var(--sb-gold);
+  background: var(--dynamic-color);
 }
 
 /* --- HEADER & HAMBURGER --- */
 .sidebar-header {
   display: flex;
   align-items: center;
-  gap: 1.2rem;
+  gap: 3.8rem;
   margin-bottom: 2.5rem;
   padding-left: 0.5rem;
 }
@@ -74,11 +75,11 @@
 
 .hamburger-btn:hover {
   background: rgba(255, 255, 255, 0.05);
-  color: var(--sb-gold);
+  color: var(--dynamic-color);
 }
 
 .brand-name {
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 1px;
   transition: opacity 0.2s;
 }
@@ -102,7 +103,7 @@
 }
 
 .user-profile-card:hover {
-  border-color: rgba(212, 175, 55, 0.3);
+  border-color: color-mix(in srgb, var(--dynamic-color) 30%, transparent);
   background: rgba(255, 255, 255, 0.06);
 }
 
@@ -133,6 +134,48 @@
   font-size: 0.65rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+
+/* USER DROPDOWN ESTILOS MEJORADOS */
+.user-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: #1a1a1c;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  margin-top: 8px;
+  padding: 8px;
+  z-index: 10;
+  animation: fadeIn 0.2s ease;
+}
+
+.user-dropdown.floating {
+  width: max-content;
+  left: 100%;
+  top: 0;
+  margin-left: 10px;
+  margin-top: 0;
+}
+
+.dropdown-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  color: #ff5555;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+  font-size: 0.85rem;
+}
+
+.dropdown-item:hover {
+  background: rgba(255, 85, 85, 0.1);
 }
 
 /* --- NAV ITEMS & ICONS --- */
@@ -178,8 +221,8 @@
 
 .menu-trigger:hover .icon-box,
 .menu-trigger.active .icon-box {
-  background: rgba(212, 175, 55, 0.15);
-  color: var(--sb-gold);
+  background: color-mix(in srgb, var(--dynamic-color) 15%, transparent);
+  color: var(--dynamic-color);
 }
 
 .menu-trigger.active {
@@ -187,19 +230,19 @@
   color: #fff;
 }
 
-/* --- SUBMENÚ ESTILIZADO (Fusionado) --- */
+/* --- SUBMENÚ ESTILIZADO --- */
 .submenu {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  padding-left: 3.2rem; /* Alineado con el texto del padre */
+  padding-left: 3.2rem;
   margin-bottom: 1rem;
   animation: fadeIn 0.3s ease-out;
 }
 
 .submenu-item {
   color: #666;
-  text-decoration: none; /* Elimina el subrayado azul */
+  text-decoration: none;
   font-size: 0.82rem;
   padding: 8px 0;
   display: flex;
@@ -210,22 +253,21 @@
 
 .submenu-item:hover {
   color: #fff;
-  transform: translateX(4px); /* Efecto de desplazamiento */
+  transform: translateX(4px);
 }
 
-/* Punto decorativo opcional para el submenú */
 .submenu-item::before {
   content: "•";
-  color: transparent;
+  color: color-mix(in srgb, var(--dynamic-color) 30%, transparent);
   font-size: 1.2rem;
   transition: color 0.2s;
 }
 
 .submenu-item:hover::before {
-  color: var(--sb-gold);
+  color: var(--dynamic-color);
 }
 
-/* --- COLAPSO SUAVE (Lógica de visibilidad) --- */
+/* --- COLAPSO SUAVE --- */
 .sidebar-component.collapsed .label-text,
 .sidebar-component.collapsed .user-info,
 .sidebar-component.collapsed .user-arrow,
@@ -237,7 +279,7 @@
   margin: 0;
   padding: 0;
   pointer-events: none;
-  display: none; /* Evita que ocupen espacio al estar colapsado */
+  display: none;
 }
 
 .sidebar-component.collapsed .menu-trigger {
@@ -246,7 +288,7 @@
 
 .sidebar-divider {
   height: 1px;
-  background: linear-gradient(to right, transparent, rgba(212, 175, 55, 0.1), transparent);
+  background: linear-gradient(to right, transparent, color-mix(in srgb, var(--dynamic-color) 20%, transparent), transparent);
   margin-bottom: 1.5rem;
 }
 

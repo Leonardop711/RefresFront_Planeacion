@@ -15,9 +15,10 @@
 }
 
 .content-header h2 {
-  font-size: 1.8rem;
-  font-weight: 700;
-  border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   padding-bottom: 1.5rem;
   margin-bottom: 2rem;
 }
@@ -28,4 +29,124 @@
   padding: 3rem;
   border-radius: 20px;
   text-align: center;
+}
+
+/* --- HEADER Y BOTÓN DE REGRESAR --- */
+.content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Espacio entre el botón y el título */
+}
+
+/* Quitamos el borde inferior que tenía tu h2 original porque ya se lo pusimos al contenedor */
+.content-header h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0; 
+  padding: 0;
+  border: none;
+}
+
+.back-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.back-btn:hover {
+  /* Al hacer hover, se mueve un poquito a la izquierda simulando "volver" */
+  transform: translateX(-4px); 
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.dynamic-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  text-align: left;
+  margin-top: 1rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+}
+
+.full-width { grid-column: span 2; }
+
+.input-group label {
+  display: block;
+  font-size: 0.8rem;
+  color: #888;
+  margin-bottom: 0.5rem;
+}
+
+.input-group input, .input-group textarea {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  padding: 10px;
+  color: #fff;
+  outline: none;
+}
+
+.input-group input:focus { border-color: var(--dynamic-color); }
+
+.add-btn, .send-final-btn {
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  color: #000;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.send-final-btn {
+  margin-top: 2rem;
+  background: #fff;
+  width: 100%;
+}
+
+/* Tabla Estilizada */
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  font-size: 0.85rem;
+}
+
+.custom-table th {
+  text-align: left;
+  padding: 12px;
+  border-bottom: 2px solid rgba(255,255,255,0.1);
+  color: #888;
+}
+
+.custom-table td {
+  padding: 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  color: #ddd;
 }

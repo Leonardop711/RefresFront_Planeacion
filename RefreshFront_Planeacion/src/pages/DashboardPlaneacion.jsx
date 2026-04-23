@@ -1,33 +1,26 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+// src/views/DashboardPlaneacion.jsx
+import React, { useState } from 'react';
 import { Target, TrendingUp, BarChart3, LayoutDashboard, Lock } from 'lucide-react';
+import WorkspacePlaneacion from './WorkspacePlaneacion'; // Importamos el Workspace
 import '../styles/DashboardPlaneacionRe.css';
 
 const DashboardPlaneacion = ({ user }) => {
-  const navigate = useNavigate();
+  // ESTADO CLAVE: Controla qué área estamos viendo. 
+  // Si es null, vemos el menú de tarjetas. Si tiene un string, vemos el Workspace.
+  const [selectedArea, setSelectedArea] = useState(() => {
+    return localStorage.getItem("user_activate_area") || null;
+  });
 
-  console.log("Usuario validado desde backend:", user);
-
-  // 🧠 LÓGICA SENIOR: Mapeo estricto por correo electrónico (ACTUALIZADO)
+  // Mapeo estricto por correo electrónico
   const determinarAreaPermitida = (usuario) => {
     if (!usuario) return null;
+    if (usuario.rol === 'admin' || usuario.email === 'admin@sistema.com') return 'todas';
 
-    // 1. El Admin Maestro tiene acceso a 'todas'
-    if (usuario.rol === 'admin' || usuario.email === 'admin@sistema.com') {
-      return 'todas';
-    }
-
-    // 2. Validación por credenciales principales exactas
     switch (usuario.email) {
-      case 'planeacion@sistema.com':
-        return 'estrategica';     // Tarjeta 1: Planeación Estratégica
-      case 'inversion@sistema.com':
-        return 'inversion';       // Tarjeta 2: Inversión Pública
-      case 'seguimiento@sistema.com':
-        return 'seguimiento';     // Tarjeta 3: Seguimiento y Evaluación
-      default:
-        // Fallback de seguridad
-        return usuario.area || null; 
+      case 'planeacion@sistema.com': return 'estrategica';
+      case 'inversion@sistema.com': return 'inversion';
+      case 'seguimiento@sistema.com': return 'seguimiento';
+      default: return usuario.area || null; 
     }
   };
 
@@ -37,11 +30,28 @@ const DashboardPlaneacion = ({ user }) => {
     return areaAsignada === areaRequerida || areaAsignada === 'todas';
   };
 
-  const handleSelection = (areaTarget) => {
-    localStorage.setItem("user_active_area", areaTarget);
-    navigate('/workspace'); // Ruta absoluta hacia el layout de trabajo
-  };
+const handleSelection = (areaTarget) => {
+  setSelectedArea(areaTarget);
+  localStorage.setItem("user_active_area", areaTarget);
+  localStorage.setItem(`active_module_${areaTarget}`, 'welcome');
+};
 
+  // 🔥 RENDERIZADO CONDICIONAL 🔥
+  // Si el usuario ya seleccionó un área, ocultamos las tarjetas y mostramos el Workspace
+  if (selectedArea) {
+    return (
+      <WorkspacePlaneacion 
+        user={user} 
+        area={selectedArea} 
+        onBack={() => {
+          setSelectedArea(null);
+          localStorage.removeItem("user_active_area");
+        }}
+      />
+    );
+  }
+
+  // Si selectedArea es null, mostramos las tarjetas normalmente
   return (
     <div className="dashboard-container dark-theme">
       <header className="top-banner">
@@ -52,12 +62,9 @@ const DashboardPlaneacion = ({ user }) => {
       </header>
 
       <main className="cards-grid">
-        {/* TARJETA 1: PLANEACIÓN ESTRATÉGICA */}
         <section className={`nav-card ${!hasAccess('estrategica') ? 'locked' : ''}`}>
           {!hasAccess('estrategica') && <Lock className="lock-icon" size={24} />}
-          <div className="card-icon-wrapper">
-            <Target size={40} strokeWidth={1.5} />
-          </div>
+          <div className="card-icon-wrapper"><Target size={40} strokeWidth={1.5} /></div>
           <h3>Planeación Estratégica</h3>
           <p>Definición de objetivos y metas a largo plazo.</p>
           <button 
@@ -69,12 +76,9 @@ const DashboardPlaneacion = ({ user }) => {
           </button>
         </section>
 
-        {/* TARJETA 2: INVERSIÓN PÚBLICA */}
         <section className={`nav-card ${!hasAccess('inversion') ? 'locked' : ''}`}>
           {!hasAccess('inversion') && <Lock className="lock-icon" size={24} />}
-          <div className="card-icon-wrapper">
-            <TrendingUp size={40} strokeWidth={1.5} />
-          </div>
+          <div className="card-icon-wrapper"><TrendingUp size={40} strokeWidth={1.5} /></div>
           <h3>Inversión Pública</h3>
           <p>Gestión de presupuestos y recursos del estado.</p>
           <button 
@@ -86,12 +90,9 @@ const DashboardPlaneacion = ({ user }) => {
           </button>
         </section>
 
-        {/* TARJETA 3: SEGUIMIENTO Y EVALUACIÓN */}
         <section className={`nav-card ${!hasAccess('seguimiento') ? 'locked' : ''}`}>
           {!hasAccess('seguimiento') && <Lock className="lock-icon" size={24} />}
-          <div className="card-icon-wrapper">
-            <BarChart3 size={40} strokeWidth={1.5} />
-          </div>
+          <div className="card-icon-wrapper"><BarChart3 size={40} strokeWidth={1.5} /></div>
           <h3>Seguimiento y Evaluación</h3>
           <p>Monitoreo de indicadores y resultados de gestión.</p>
           <button 

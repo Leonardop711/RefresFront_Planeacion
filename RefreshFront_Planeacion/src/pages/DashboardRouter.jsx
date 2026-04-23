@@ -36,7 +36,6 @@ export default function DashboardRouter() {
   }, [])
 
   if (loading) return <p>Cargando información del sistema...</p>
-
   if (!user) return <p>No autorizado - Inicia sesión nuevamente</p>
 
   // LÓGICA DE RENDERIZADO POR ROLES
